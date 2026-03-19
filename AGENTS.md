@@ -85,7 +85,8 @@ These belong to future extensions and must remain opt-in.
 
 ## Required design philosophy
 
-Keep the implementation split into three layers.
+Keep the implementation split into three logical layers.
+This is a design boundary, not a requirement for deep directory nesting.
 
 ### 1. Public API layer
 
@@ -127,25 +128,27 @@ This library must not know where those arrays came from.
 
 ## File structure guidance
 
+Prefer a shallow source tree.
+
 Recommended structure:
 
 ```text
 src/
-  physics/
-    field_solver/
-      ewald/
-        ewald2p_reciprocal.f90
-        ewald2p_reciprocal_build.f90
-        ewald2p_reciprocal_state.f90
-        ewald2p_reciprocal_eval.f90
-        internal/
-          ewald2p_recip_types.f90
-          ewald2p_recip_kspace.f90
-          ewald2p_recip_zero_mode.f90
-          ewald2p_recip_wrap.f90
-          ewald2p_recip_utils.f90
-````
+  ewald2p_reciprocal.f90
+  ewald2p_reciprocal_build.f90
+  ewald2p_reciprocal_state.f90
+  ewald2p_reciprocal_eval.f90
+  internal/
+    ewald2p_recip_types.f90
+    ewald2p_recip_kspace.f90
+    ewald2p_recip_zero_mode.f90
+    ewald2p_recip_wrap.f90
+    ewald2p_recip_utils.f90
+```
 
+Use module boundaries and file names to express layering.
+Keep subdirectories to a minimum.
+For v0.1, `internal/` is enough; deeper nesting is not encouraged.
 Keep source-independent and source-dependent logic separate.
 
 ---

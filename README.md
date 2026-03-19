@@ -60,9 +60,15 @@ The public API is array-based and works with:
 
 This makes the library suitable as a reusable internal module behind a solver adapter.
 
-## Planned public API
+## Public API
 
-The intended public interface is:
+The public interface is exposed from:
+
+```fortran
+use ewald2p_reciprocal
+```
+
+The main entry points are:
 
 ```fortran
 call build_recip_plan(plan, options)
@@ -80,24 +86,17 @@ call eval_recip_points(plan, state, target_pos, e, phi)
 ├─ AGENTS.md
 ├─ fpm.toml
 ├─ src/
-│  └─ ewald2p_recip.f90
+│  ├─ ewald2p_reciprocal.f90
+│  ├─ ewald2p_reciprocal_build.f90
+│  ├─ ewald2p_reciprocal_state.f90
+│  ├─ ewald2p_reciprocal_eval.f90
+│  └─ internal/
+│     ├─ ewald2p_recip_types.f90
+│     ├─ ewald2p_recip_kspace.f90
+│     ├─ ewald2p_recip_zero_mode.f90
+│     ├─ ewald2p_recip_wrap.f90
+│     └─ ewald2p_recip_utils.f90
 └─ test/
-```
-
-As the implementation grows, the source tree is expected to be split into smaller modules such as:
-
-```text
-src/
-  ewald2p_recip.f90
-  ewald2p_recip_build.f90
-  ewald2p_recip_state.f90
-  ewald2p_recip_eval.f90
-  internal/
-    ewald2p_recip_types.f90
-    ewald2p_recip_kspace.f90
-    ewald2p_recip_zero_mode.f90
-    ewald2p_recip_wrap.f90
-    ewald2p_recip_utils.f90
 ```
 
 ## Build
@@ -116,14 +115,13 @@ fpm test
 
 ## Status
 
-This repository is currently specification-first.
+The repository now includes a direct mode-sum reference backend for:
 
-Current focus:
-
-1. establish the reciprocal-space specification
-2. implement a direct mode-sum reference backend
-3. validate neutrality, zero-mode, and self-interaction handling
-4. add tests before optimization
+1. source-independent reciprocal plan construction
+2. source-dependent state updates with neutrality checking
+3. pointwise and batched reciprocal evaluation
+4. analytic zero-mode handling and potential self correction
+5. regression tests for periodicity, zero mode, self policy, and cutoff convergence
 
 ## Notes
 

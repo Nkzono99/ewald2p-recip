@@ -85,6 +85,14 @@ call eval_recip_point(plan, state, r, e, phi)
 * zero-mode は別ルーチンで扱う
 * source = target の自己相互作用は明示的に除外する
 
+### 3.4 ソース配置方針
+
+実装上の層分離は **論理的な分離** を意味する。
+深いディレクトリ階層は要求しない。
+
+初版では、公開 API は `src/` 直下、内部補助は `src/internal/` に置く
+浅い構成を推奨する。
+
 ---
 
 ## 4. 問題設定
@@ -619,20 +627,21 @@ potential を source 点で評価する場合、self term は
 
 ```text
 src/
-  physics/
-    field_solver/
-      ewald/
-        ewald2p_reciprocal.f90
-        ewald2p_reciprocal_build.f90
-        ewald2p_reciprocal_state.f90
-        ewald2p_reciprocal_eval.f90
-        internal/
-          ewald2p_recip_types.f90
-          ewald2p_recip_kspace.f90
-          ewald2p_recip_zero_mode.f90
-          ewald2p_recip_wrap.f90
-          ewald2p_recip_utils.f90
+  ewald2p_reciprocal.f90
+  ewald2p_reciprocal_build.f90
+  ewald2p_reciprocal_state.f90
+  ewald2p_reciprocal_eval.f90
+  internal/
+    ewald2p_recip_types.f90
+    ewald2p_recip_kspace.f90
+    ewald2p_recip_zero_mode.f90
+    ewald2p_recip_wrap.f90
+    ewald2p_recip_utils.f90
 ```
+
+この分割は、公開層と内部層を見分けやすくするための最小構成である。
+概念的な所属を表すために `physics/field_solver/...` のような深い階層へ
+展開することは初版では推奨しない。
 
 ---
 
