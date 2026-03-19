@@ -343,6 +343,7 @@ When editing or generating code:
 * add comments for non-obvious formulas, not for trivial assignments
 * prefer readable loops over overly compressed logic
 * avoid introducing hidden assumptions
+* ignore `*.i90` files, as they are automatically generated backup files.
 
 When adding a new option, document:
 
